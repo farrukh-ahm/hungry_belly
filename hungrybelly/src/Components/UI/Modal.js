@@ -6,7 +6,7 @@ import styles from '../UI/Modal.module.css'
 const Backdrop = props => {
 
     return(
-        <div className={styles.backdrop}></div>
+        <div className={styles.backdrop} onClick={props.onClick}></div>
     )
 
 }
@@ -27,7 +27,7 @@ const Modal = props => {
 
     return(
         <React.Fragment>
-            {ReactDOM.createPortal(<Backdrop />, ModalCall)}
+            {ReactDOM.createPortal(<Backdrop onClick={props.onClick}/>, ModalCall)}
             {ReactDOM.createPortal(<ModalOverlay>{props.children}</ModalOverlay>, ModalCall)}
         </React.Fragment>
     )

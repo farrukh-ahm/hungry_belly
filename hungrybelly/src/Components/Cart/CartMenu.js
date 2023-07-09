@@ -1,27 +1,36 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Modal from '../UI/Modal';
+import CartItems from './CartItems';
+import CartContext from '../../store/context';
+import styles from '../Cart/CartMenu.module.css';
 
-
-const dummy_order = [
-    {id: 1, item: "Sushi", amount: "2", price: 25},
-    {id: 2, item: "Biryani", amount: "1", price: 20}
-]
 
 const CartMenu = props => {
 
-    const orderMenu = dummy_order.map(item=>{
+    const ctx = useContext(CartContext)
+
+    const orderMenu = ctx.item.map(item=>{
         return(
-            <li key={item.id}>
-                <h3>{item.item}</h3>
-                <p>{item.price}</p>
-                <p>{item.amount}</p>
-            </li>
+            <CartItems
+                id={item.id} 
+                item={item.item}
+                price={item.price}
+                amount={item.amount}
+            />
         )
     })
 
     return(
-        <Modal>
-            {orderMenu}
+        <Modal onClick={props.onClose}>
+            <ul className={styles['cart-items']}>{orderMenu}</ul>
+            <div className={styles.total}>
+                <span>Total Amount</span>
+                <span>{ctx.totalAmount}</span>
+            </div>
+            <div className={styles.actions}>
+                <button className={styles['button--alt']} onClick={props.onClose}>Close</button>
+                <button className={styles.button}>Order</button>
+            </div>
         </Modal>
     )
 

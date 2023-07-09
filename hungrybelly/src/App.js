@@ -1,15 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from './Components/Header/Header';
 import Menu from './Components/Menu/Menu';
 import CartMenu from './Components/Cart/CartMenu';
+import CartProvider from './store/ContextProvider';
 
 function App() {
+
+  const [modalDisplay, setModalDisplay] = useState(false);
+
+  const modalHandler = () => {
+    modalDisplay?setModalDisplay(false):setModalDisplay(true)
+  }
+
   return (
-    <React.Fragment>
-      <Header />
-      <CartMenu />
+    <CartProvider>
+      {modalDisplay && <CartMenu onClose={modalHandler}/>}
+      <Header onOpen={modalHandler}/>
+
       <Menu />
-    </React.Fragment>
+    </CartProvider>
   );
 }
 
