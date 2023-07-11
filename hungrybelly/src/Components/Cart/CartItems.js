@@ -4,7 +4,7 @@ import styles from '../Cart/CartItem.module.css'
 
 const CartItems= props => {
 
-    const price = props.price.toFixed(2);
+    const price = parseInt(props.price).toFixed(2);
 
     return(
         <li className={styles['cart-item']}>

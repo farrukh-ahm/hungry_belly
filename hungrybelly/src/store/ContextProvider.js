@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useReducer, useState } from 'react';
 import CartContext from "./context";
 
 
 const CartProvider = props =>{
 
-    const onItemAdd = props =>{
+    const [addCart, setAddCart] = useState({item: [{id:1, item:'Biryani', price:10, amount:'2'}], totalAmount: ''})
 
+    const onItemAdd = item =>{
+        const newItem = [...addCart.item, item]
+        console.log(newItem)
+        setAddCart((prevState)=>{
+            console.log(prevState)
+            return{...prevState, item:[...newItem]}
+        })
     }
 
     const onItemRemove = props => {
 
     }
 
+    
     const cartContext={
-        item:[{id: '1', item: 'Biryani', price:10, amount: '1'}, {id: '2', item: 'Prawn', price: 12, amount: '1'}],
-        totalAmount: 500,
+        item:addCart.item,
+        totalAmount: addCart.totalAmount,
         onAdd: onItemAdd,
         onRemove: onItemRemove
     }

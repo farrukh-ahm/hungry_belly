@@ -1,17 +1,28 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Input from '../UI/Input';
 import styles from '../Menu/MealForm.module.css'
 
 
 const MealForm = props => {
 
+    const amountRef = useRef()
+    const [formValid, setFormValid] = useState(true)
     const submitHandler = e =>{
         e.preventDefault()
+        const amountValue = amountRef.current.value;
+        const amountIntValue = +amountValue;
+        console.log(`amountvalue: ${amountValue}, amountIntValue:${amountIntValue}`)
+        if(amountValue.trim().length===0||amountIntValue<0||amountIntValue>5){
+            setFormValid(false)
+            return
+        }
+        props.onFormSubmit(amountIntValue)
     }
 
     return(
         <form className={styles.form} onSubmit={submitHandler}>
             <Input
+                ref={amountRef}
                 label="Amount" 
                 input={{
                     id: props.id,
@@ -23,6 +34,7 @@ const MealForm = props => {
                 }}
             />
             <button>+Add</button>
+            {!formValid && <p>Please enter correct amount</p>}
         </form>
     )
 

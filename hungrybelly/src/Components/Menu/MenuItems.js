@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MealForm from './MealForm';
-import styles from '../Menu/MenuItems.module.css'
+import CartContext from '../../store/context';
+import styles from '../Menu/MenuItems.module.css';
 
 
 const DUMMY_MEALS = [
@@ -33,19 +34,30 @@ const DUMMY_MEALS = [
 
 const MenuItems = props => {
 
+    const ctx = useContext(CartContext)
+
     const menu = DUMMY_MEALS.map(item=>{
-        return(
-            <li className={styles.meal} key={item.id}>
-                <div>
-                    <h3>{item.name}</h3>
-                    <div className={styles.description}>{item.description}</div>
-                    <div className={styles.price}>{`€${item.price.toFixed(2)}`}</div>
-                </div>
-                <div>
-                    <MealForm id={item.id}/>
-                </div>
-            </li>
-        )
+
+      const onAddItem = amount => {
+        ctx.onAdd({
+          id:item.id,
+          item: item.name,
+          amount: amount,
+          price: item.price
+        })
+      }
+      return(
+          <li className={styles.meal} key={item.id}>
+              <div>
+                  <h3>{item.name}</h3>
+                  <div className={styles.description}>{item.description}</div>
+                  <div className={styles.price}>{`€${item.price.toFixed(2)}`}</div>
+              </div>
+              <div>
+                  <MealForm id={item.id} onFormSubmit={onAddItem}/>
+              </div>
+          </li>
+      )
     })
 
     return(
