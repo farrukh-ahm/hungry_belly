@@ -1,18 +1,36 @@
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import CartContext from "./context";
 
 
+const defaultCart = {item:[], totalAmount: 0}
+
 const CartProvider = props =>{
 
-    const [addCart, setAddCart] = useState({item: [{id:1, item:'Biryani', price:10, amount:'2'}], totalAmount: ''})
+    const [addCart, setAddCart] = useState(defaultCart)
 
     const onItemAdd = item =>{
-        const newItem = [...addCart.item, item]
-        console.log(newItem)
+
+        const updatedAmount = addCart.totalAmount + item.price * item.amount
+        const existingItemIndex = addCart.item.findIndex(x=>x.id===item.id)
+        const existingItem = addCart.item[existingItemIndex]
+        let updatedMeal
+
+        if(existingItem){
+            updatedMeal = [...addCart.item];
+            updatedMeal[existingItemIndex].amount = existingItem.amount + item.amount 
+        }
+
+        else{
+            updatedMeal = [...addCart.item, item]
+        }
+        
+        console.log(updatedMeal)
+        console.log(`AddCart: ${addCart.item}`)
         setAddCart((prevState)=>{
-            console.log(prevState)
-            return{...prevState, item:[...newItem]}
+            return{item:[...updatedMeal], totalAmount: updatedAmount}
         })
+
+        return{defaultCart}
     }
 
     const onItemRemove = props => {
