@@ -33,8 +33,30 @@ const CartProvider = props =>{
         return{defaultCart}
     }
 
-    const onItemRemove = props => {
+    const onItemRemove = id => {
 
+        const existingItemIndex = addCart.item.findIndex(item=>item.id===id)
+        const existingItem = addCart.item[existingItemIndex]
+        const updatedAmount = addCart.totalAmount - existingItem.price
+
+        let updatedMeals
+
+        if(existingItem.amount===1){
+            updatedMeals = addCart.item.filter(item=>item.id!==id) 
+        }
+
+        else{
+            const updatedMeal = {...existingItem, amount:existingItem.amount-1};
+            updatedMeals = [...addCart.item];
+            updatedMeals[existingItemIndex]=updatedMeal
+        }
+        setAddCart((prevState)=>{
+            return{
+                item:[...updatedMeals],
+                totalAmount:updatedAmount
+            }
+        })
+        
     }
 
     

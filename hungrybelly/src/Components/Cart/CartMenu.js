@@ -10,6 +10,16 @@ const CartMenu = props => {
     const ctx = useContext(CartContext)
     const totalAmount = `€${ctx.totalAmount.toFixed(2)}`
 
+    const addItemhandler = item =>{
+        ctx.onAdd({...item, amount:1})
+    }
+
+    const removeItemHandler = id =>{
+
+        ctx.onRemove(id)
+
+    }
+
     const orderMenu = ctx.item.map(item=>{
         return(
             <CartItems
@@ -18,6 +28,8 @@ const CartMenu = props => {
                 item={item.item}
                 price={item.price}
                 amount={item.amount}
+                onAdd={addItemhandler.bind(null, item)}
+                onRemove={removeItemHandler.bind(null, item.id)}
             />
         )
     })
